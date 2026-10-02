@@ -1,0 +1,13 @@
+# Personal data never belongs in this public repo
+private/
+*.local.*
+.env
+.env.*
+*.pem
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+node_modules/
