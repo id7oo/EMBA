@@ -57,6 +57,14 @@ On the first run of each Riyadh day (or whenever `brief/today.date` isn't today)
 
 On the evening run, only rewrite the brief when something important changed. Keep `date` as today.
 
+## 5b. Analysis, not transcription
+
+Write in the student's language (`settings/main.language`, default Arabic; emails to MBSC stay in English).
+
+- `insights/main`: `lang`, `headline` (the one message that matters), `assessment` (markdown: the big picture and why), `week_plan` (next 7 days: `day` + `items[{text, minutes}]`, ordered so the cheapest high-impact actions come first), `risks` (`level`, `title`, `why`, `fix`), `decisions` (questions only the student can answer), `load` (what's coming per month and how heavy), `generated_at`.
+- Digest `summary` explains what the email means for the student, not what it says. `action` is the one next step.
+- When an action needs an email, write it into `drafts/<id>` (`title`, `purpose`, `to`, `cc`, `subject`, `body`, `status: "ready"`). Never send it.
+
 ## 6. Alerts
 
 - **Push notification.** The run's final message is what the student sees on their phone. If anything needs action within 72 hours, or high-importance mail arrived, start with `Action needed:` followed by at most 3 items with dates. Otherwise reply `No new MBSC items.` plus one line on the next deadline. Keep it under 300 characters, plain text.

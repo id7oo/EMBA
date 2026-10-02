@@ -76,6 +76,10 @@ Claude's digest of MBSC mail: one document per email thread.
 | `source` | `me` \| `claude` | |
 | `created_at` | string | |
 
+### `drafts/<id>`
+
+Emails Claude prepared for the student to send: `title`, `purpose`, `to`, `cc`, `subject`, `body`, `status` (`ready` | `sent`), `lang`, `created_at`, `updated_at`. Claude never sends them.
+
 ### `courses/<id>` (optional)
 
 `name`, `code`, `module`, `professor`, `notes`. Fill it in once course names are known (they're in PDFs and on Blackboard, not in email text).
@@ -86,9 +90,10 @@ Claude's digest of MBSC mail: one document per email thread.
 |---|---|
 | `profile/main` | `name` (first name), `full_name`, `student_email`, `personal_email`, `student_id` (when known), `timezone` |
 | `program/info` | `name`, `short_name`, `school`, `cohort`, `class_of`, `format`, `start` (first teaching day), `duration_months`, `expected_end` (once known), `next_module_note`, `facts[]` (strings), `contacts[]` (`name`, `role`, `email`, `phone`), `links[]` (`label`, `url`) |
+| `insights/main` | Claude's analysis: `lang`, `headline`, `assessment`, `week_plan[]`, `risks[]`, `decisions[]`, `load[]`, `generated_at`. The page's **Rethink** button regenerates it with the student's own Claude plan |
 | `brief/today` | `date` (`YYYY-MM-DD`), `headline`, `body` (markdown bullets), `generated_at` |
 | `meta/sync` | `last_run_at`, `runs`, `schedule`, `next_run_hint`, `last_summary` (markdown), `sources` (map of source → status) |
-| `settings/main` | `routine_trigger_id`, `calendar_reminders` (bool), `mail_query`, `timezone`, `setup.<step>` = `{done, at, by}` for steps `gmail`, `routine`, `blackboard_calendar`, `home_screen`, `outlook_forward`, `repo_private`, `chrome`, `m365` |
+| `settings/main` | `routine_trigger_id`, `calendar_reminders` (bool), `language` (`ar` or `en`), `mail_query`, `timezone`, `setup.<step>` = `{done, at, by}` for steps `gmail`, `routine`, `blackboard_calendar`, `home_screen`, `outlook_forward`, `repo_private`, `chrome`, `m365` |
 
 ## Housekeeping
 
