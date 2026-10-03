@@ -51,6 +51,7 @@ flowchart LR
 | `copilot/playbook.md` | What each sync does |
 | `copilot/data-model.md` | The database's collections and fields |
 | `copilot/routine-prompt.md` | The scheduled routine's prompt (private values left out) |
+| `docs/integrations.md` | Every MBSC platform: official and workaround ways to connect it |
 | `docs/connect-sources.md` | Connecting Gmail, Blackboard, Outlook, the MBSC site, and the Claude vs ChatGPT question |
 | `CLAUDE.md` | Standing instructions for every Claude session in this repo |
 
