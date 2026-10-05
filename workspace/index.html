@@ -1625,6 +1625,10 @@ main { padding-inline: 16px; padding-block: 16px calc(96px + env(safe-area-inset
       const acts = h('div', { class: 'tactions' });
       acts.append(h('button', { class: 'btn small', type: 'button', onclick: () => openSheet(t) }, icon('edit', 'ic sm'), 'Edit'));
       if (t.status !== 'done' && dayOf(t.due)) acts.append(h('button', { class: 'btn small', type: 'button', onclick: () => snooze(t) }, bucketOf(t) === 'overdue' ? 'Move to tomorrow' : 'Push 1 day'));
+      if (t.status !== 'done' && dayOf(t.due) && S.mcp) {
+        if (t.calendar_event_id) acts.append(h('span', { class: 'pill palm' }, '🔔 في تقويمك'));
+        else acts.append(h('button', { class: 'btn small', type: 'button', onclick: (ev) => remindOnPhone(t, ev.currentTarget) }, '🔔 ذكّرني'));
+      }
       acts.append(confirmButton('Delete', 'Tap again to delete', () => deleteTask(t)));
       d.append(acts);
     }
@@ -1645,6 +1649,30 @@ main { padding-inline: 16px; padding-block: 16px calc(96px + env(safe-area-inset
     } else next = shiftDue(t.due, 1);
     try { await dbWrite('tasks/' + t.id, 'update', { due: next, updated_at: nowIso() }); toast('Moved to ' + fmtDay(dayOf(next))); }
     catch (e) { toast(writeErrText(e)); }
+  }
+  async function remindOnPhone(t, btn) {
+    if (!S.mcp) { toast('التذكير يحتاج فتح الديوان على claude.ai'); return; }
+    if (btn) btn.disabled = true;
+    const d = dayOf(t.due);
+    const timed = hasTime(t.due);
+    const startT = timed ? t.due : d + 'T09:00:00+03:00';
+    const endT = timed ? (toDate(t.due) ? new Date(toDate(t.due).getTime() + 30 * 60000).toISOString() : d + 'T09:15:00+03:00') : d + 'T09:15:00+03:00';
+    const input = {
+      summary: 'EMBA: ' + (t.title || 'مهمة'),
+      startTime: startT, endTime: endT, timeZone: TZ,
+      description: (t.details ? String(t.details).slice(0, 900) + '\n\n' : '') + (safeUrl(t.link) || '') + '\n— EMBA Diwan',
+      overrideReminders: [{ method: 'popup', minutes: 1440 }, { method: 'popup', minutes: 120 }],
+    };
+    try {
+      const r = await S.mcp.callTool('Google Calendar', 'create_event', input);
+      const p = r.payload || {};
+      const eid = p.id || p.eventId || (p.event && p.event.id) || 'set';
+      await dbWrite('tasks/' + t.id, 'update', { calendar_event_id: String(eid), updated_at: nowIso() });
+      toast('انضاف لتقويمك · بينبهك جوالك قبلها');
+    } catch (e) {
+      if (btn) btn.disabled = false;
+      toast(e && e.code === 'tool_error' ? 'ما قدر يضيفه: ' + (e.message || '') : liveErrText(e, 'Google Calendar'));
+    }
   }
   async function deleteTask(t) {
     try { await dbWrite('tasks/' + t.id, 'delete'); S.expanded.delete(t.id); toast('Task deleted'); }
