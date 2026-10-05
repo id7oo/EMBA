@@ -38,5 +38,7 @@ This repository powers a private workspace for an Executive MBA student at MBSC 
 
 1. Edit `workspace/index.html`. Keep personal data out of it; the page reads everything from the database.
 2. Check the script: extract the `<script>` body and run `node --check` on it.
-3. Publish with the `Artifact` tool to the same URL. From a new session, `read` the artifact first, then publish with `url` set. Omit `capabilities` to keep the declared ones: `db` (owner-only read/write rule), `user`, `sample`, and `mcp` (Gmail `search_threads`, `get_thread`; Google Calendar `list_calendars`, `list_events`; Claude Code Remote `fire_trigger`).
+3. Publish with the `Artifact` tool to the same URL. From a new session, `read` the artifact first, then publish with `url` set. Omit `capabilities` to keep the declared ones: `db` (owner-only read/write rule), `user`, `sample`, and `mcp` (Google Calendar `list_calendars`, `list_events`; Microsoft 365 `outlook_email_search`, `outlook_calendar_search`, `read_resource`; `host:claude_browser` `navigate`, `get_page_text`, `read_page`, `find`, `preview_start`; Claude Code Remote `fire_trigger`).
+
+**Sources:** the student doesn't want Gmail read. The sources are the university Outlook and Blackboard. Opened in the Claude desktop app (Cowork), the page reads them itself once a day through the app's browser (or the Microsoft 365 connector), and writes `inbox` (`source: "outlook"`), `courses`, `lessons` and `tasks` plus `agent/state`.
 4. Commit the change.
