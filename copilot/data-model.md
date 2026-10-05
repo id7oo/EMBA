@@ -80,9 +80,17 @@ Claude's digest of MBSC mail: one document per email thread.
 
 Emails Claude prepared for the student to send: `title`, `purpose`, `to`, `cc`, `subject`, `body`, `status` (`ready` | `sent`), `lang`, `created_at`, `updated_at`. Claude never sends them.
 
-### `courses/<id>` (optional)
+### `lessons/<id>`
 
-`name`, `code`, `module`, `professor`, `notes`. Fill it in once course names are known (they're in PDFs and on Blackboard, not in email text).
+Study-guide lessons shown on the Study page: `course_id`, `title`, `date`, `order`, `kind` (`general` for Claude's own guides), `summary_ar` (markdown), `key_concepts[{term, explain_ar, example_ar}]`, `prep[]`, `readings[{title, url, minutes}]`, `questions[]`, `quiz[{q, answer, why}]`, `source_link`. Filled from Blackboard by the steps in `course-import.md`.
+
+### `prep/<eventId>`
+
+Class-day preparation written by the page's **جهّزني** button: `event_id`, `title`, `body` (markdown), `generated_at`.
+
+### `courses/<id>`
+
+`name`, `code`, `module`, `professor`, `order`, `overview_ar`, `why_ar`, `source_link`. Course names come from Blackboard (see `course-import.md`), not from email text.
 
 ## Single documents
 
@@ -93,7 +101,7 @@ Emails Claude prepared for the student to send: `title`, `purpose`, `to`, `cc`, 
 | `insights/main` | Claude's analysis: `lang`, `headline`, `assessment`, `week_plan[]`, `risks[]`, `decisions[]`, `load[]`, `generated_at`. The page's **Rethink** button regenerates it with the student's own Claude plan |
 | `brief/today` | `date` (`YYYY-MM-DD`), `headline`, `body` (markdown bullets), `generated_at` |
 | `meta/sync` | `last_run_at`, `runs`, `schedule`, `next_run_hint`, `last_summary` (markdown), `sources` (map of source → status) |
-| `settings/main` | `routine_trigger_id`, `calendar_reminders` (bool), `language` (`ar` or `en`), `mail_query`, `timezone`, `setup.<step>` = `{done, at, by}` for steps `gmail`, `routine`, `blackboard_calendar`, `home_screen`, `outlook_forward`, `repo_private`, `chrome`, `m365` |
+| `settings/main` | `routine_trigger_id`, `calendar_reminders` (bool), `language` (`ar` or `en`), `mail_query`, `timezone`, `connections` (`outlook`, `m365`, `chrome_last`, …: shown on the Me page's connection panel), `setup.<step>` = `{done, at, by}` for steps `gmail`, `routine`, `blackboard_calendar`, `home_screen`, `outlook_forward`, `repo_private`, `chrome`, `m365` |
 
 ## Housekeeping
 
